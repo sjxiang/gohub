@@ -1,36 +1,27 @@
 package main
 
 import (
-
-	"net/http"
-
+	"fmt"
+	
 	"github.com/gin-gonic/gin"
+	"github.com/sjxiang/gohub/bootstrap"
 )
 
 func main() {
 	
-	// new 一个 Gin Engine 实例
-	r := gin.New() 
+	// new 一个 Gin Engine 实例（指针对象，不会被逃逸分析或垃圾回收干掉，尽情配置）
+	router := gin.New() 
 
-	// 注册中间件
-	r.Use(gin.Logger(), gin.Recovery())
-
-
-	// 注册路由
-	r.GET("/ping", func(ctx *gin.Context) {
-
-		// 以 JSON 格式响应
-		ctx.JSON(http.StatusOK, gin.H{
-			"msg": "pong",
-		}) 
-	})
+	// 初始化路由绑定
+	bootstrap.SetupRoute(router)
 
 
-	// 处理 404 请求
+	// 运行服务，指定监听端口为 3000
+	err := router.Run(":3000")
+	if err != nil {
 
-
-	
-	// 运行服务，指定端口为 8080
-	r.Run(":8080")
+		// 错误处理，端口被占用或其他错误
+		fmt.Println(err.Error())
+	}
 }
 
