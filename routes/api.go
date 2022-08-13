@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sjxiang/gohub/app/http/controllers/api/v1/auth"
 )
 
 
@@ -23,6 +24,14 @@ func RegisterApiRoutes(r *gin.Engine) {
 				"msg": "pong",
 			}) 
 		})
+
+		authGroup := v1.Group("/auth")
+		{
+			suc := new(auth.SignupController)
+			// 判断手机是否已注册
+			authGroup.POST("/signup/phone/exist", suc.IsPhoneExist)
+			
+		}
 
 	}
 }

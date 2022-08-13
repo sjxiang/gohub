@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/sjxiang/gohub/app/data/user"
 	"github.com/sjxiang/gohub/config"
 	"github.com/sjxiang/gohub/pkg/database"
 
@@ -11,8 +12,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
-
-
 
 // SetupDB 初始化数据库和 ORM
 func SetupDB() {
@@ -39,4 +38,6 @@ func SetupDB() {
 	database.SQLDB.SetMaxOpenConns(config.Cfg.Mysql.MaxOpenConn)
 	database.SQLDB.SetMaxIdleConns(config.Cfg.Mysql.MaxIdleConn)
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.Cfg.Mysql.ConnMaxLifeSecond) * time.Second)
+
+	database.DB.AutoMigrate((&user.User{}))
 }
