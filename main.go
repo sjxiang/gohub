@@ -11,7 +11,13 @@ import (
 
 
 func init() {
+	
+	// 加载 config 目录下的配置信息 
 	config.LoadConfig()
+
+	// 初始化 DB
+	bootstrap.SetupDB()
+	
 }
 
 
@@ -31,5 +37,6 @@ func main() {
 		// 错误处理，端口被占用或其他错误
 		fmt.Println(err.Error())
 	}
+
 }
 

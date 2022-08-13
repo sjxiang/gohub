@@ -23,6 +23,7 @@ func SetupRoute(router *gin.Engine) {
 
 	// 配置 404 路由
 	setupNoFoundHandler(router)
+	
 }
   
 

@@ -17,11 +17,13 @@ app:
   # app_URL: http://localhost:9090
 
 mysql:
-  dbname: shop
-  user: root
-  password: root
-  host: localhost:3306
-  max_open_conn: 1000
+  dbname: docker
+  username: root
+  password: 123456
+  host: 172.18.0.2
+  port: 3306
+  charset: utf8mb4
+  max_open_conn: 25
   max_idle_conn: 100
   conn_max_life_second: 30
   table_prefix: search_
