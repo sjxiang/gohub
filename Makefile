@@ -10,7 +10,7 @@ ERROR_COLOR=\033[31;01m
 bare:
 	@echo ''
 	@printf '$(OK_COLOR)快糙猛，跑一哈 .. 🚀$(NO_COLOR)\n'
-	go run ./cmd/api
+	go run ./main.go
 	@echo '🎯'
 	@echo ''
 	
