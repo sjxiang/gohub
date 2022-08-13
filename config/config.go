@@ -18,7 +18,12 @@ type Config struct {
 /*
 
 这里推荐使用 mapstructure 作为序列化标签
-yaml 不支持 AppSignExpire int64  `yaml:"app_sign_expire"` 这种下划线的标签
+
+yaml 不支持 
+
+	" AppSignExpire int64  `yaml:"app_sign_expire"` " 
+
+这种下划线的标签
 
 使用 mapstructure 值得注意的地方是，只要标签中使用了下划线等连接符，":"后就不能有空格。
 比如： 
@@ -28,13 +33,12 @@ yaml 不支持 AppSignExpire int64  `yaml:"app_sign_expire"` 这种下划线的�
 */
 
 type App struct {
-	AppSignExpire   int64         `mapstructure:"app_sign_expire"`
-	RunMode         string        `mapstructure:"run_mode"`
-	HttpPort        int           `mapstructure:"http_port"`
-	ReadTimeout     time.Duration `mapstructure:"read_timeout"`
-	WriteTimeout    time.Duration `mapstructure:"write_timeout"`
-	RuntimeRootPath string        `mapstructure:"runtime_root_path"`
-	AppLogPath      string        `mapstructure:"app_log_path"`
+	Name   		string `mapstructure:"name"`
+	Port    	int    `mapstructure:"port"`   
+	Debug       bool   `mapstructure:"debug"`  // 是否进入调试模式
+	Key 		string `mapstructure:"key"`    // 加密会话，JWT 加密
+	URL 		string `mapstructure:"app_url"`
+	TimeZone 	string `mapstructure:"timezone"` // 设置时区，JWT 里会用到，日志记录里面也会用到
 }
 
 

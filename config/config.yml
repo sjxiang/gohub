@@ -1,11 +1,20 @@
 app:
-  app_sign_expire: 60
-  run_mode: dev
-  http_port: 9090
-  read_timeout: 60
-  write_timeout: 60
-  runtime_root_path: runtime/
-  app_log_path: logs/hub-api.log
+  name: Gohub
+  port: 9090
+  debug: false
+  key: 3302145ugaidgiavbdUVSDIGI8uvdasivua
+  app_url: http://localhost:9090
+  timezone: Asia/Shanghai  
+  
+  # # app_sign_expire: 60
+  # run_mode: dev
+  # http_port: 9090
+  # read_timeout: 60
+  # write_timeout: 60
+  # runtime_root_path: runtime/
+  # app_log_path: logs/hub-api.log
+  # app_key: aivbsodfb9SDIABFIaBSDIB
+  # app_URL: http://localhost:9090
 
 mysql:
   dbname: shop

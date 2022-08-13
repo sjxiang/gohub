@@ -5,7 +5,15 @@ import (
 	
 	"github.com/gin-gonic/gin"
 	"github.com/sjxiang/gohub/bootstrap"
+	"github.com/sjxiang/gohub/config"
 )
+
+
+
+func init() {
+	config.LoadConfig()
+}
+
 
 func main() {
 	
@@ -17,7 +25,7 @@ func main() {
 
 
 	// 运行服务，指定监听端口为 3000
-	err := router.Run(":3000")
+	err := router.Run(fmt.Sprintf(":%v", config.Cfg.App.Port))
 	if err != nil {
 
 		// 错误处理，端口被占用或其他错误
