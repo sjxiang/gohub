@@ -28,9 +28,9 @@ func RegisterApiRoutes(r *gin.Engine) {
 		authGroup := v1.Group("/auth")
 		{
 			suc := new(auth.SignupController)
+			
 			// 判断手机是否已注册
 			authGroup.POST("/signup/phone/exist", suc.IsPhoneExist)
-			
 		}
 
 	}

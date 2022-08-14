@@ -39,5 +39,6 @@ func SetupDB() {
 	database.SQLDB.SetMaxIdleConns(config.Cfg.Mysql.MaxIdleConn)
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.Cfg.Mysql.ConnMaxLifeSecond) * time.Second)
 
+	// 自动迁移
 	database.DB.AutoMigrate((&user.User{}))
 }
