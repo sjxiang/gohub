@@ -1,7 +1,10 @@
-// model 通用属性和方法
+
+// 数据模型 model 通用属性和方法
+
 package data
 
 import "time"
+
 
 // 基类 Model
 type BaseModel struct {

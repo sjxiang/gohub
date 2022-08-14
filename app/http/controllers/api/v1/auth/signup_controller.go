@@ -18,7 +18,7 @@ type SignupController struct {
 }
 
 
-// 检测手机号是否被注册
+// 检测手机号是否已注册
 func (sc *SignupController) IsPhoneExist(c *gin.Context) {
 
 	// 初始化请求对象 
@@ -57,4 +57,37 @@ func (sc *SignupController) IsPhoneExist(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"exist": user.IsPhoneExist(request.Phone),
 	})
+}
+
+
+// 检测邮箱是否已注册
+func (sc *SignupController) IsEmailExist(c *gin.Context) {
+
+	
+	// 初始化请求对象
+	request := requests.SignupEmailExistRequest{}
+
+	// 解析 JSON 对象
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
+			"error": err.Error(),
+		})
+		fmt.Println(err.Error())
+		return
+	}
+
+	// 表单验证
+	errs := requests.ValidateSignupEmailExist(&request, c)
+	if len(errs) > 0 {
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
+			"errors": errs,
+		})
+		return
+	}
+
+	// 检查数据库并返回
+	c.JSON(http.StatusOK, gin.H{
+		"exist": user.IsEmailExist(request.Email),
+	})
+
 }

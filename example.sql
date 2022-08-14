@@ -40,3 +40,6 @@ mysql> insert into `users` (phone)
 values ("18018001801"),
        ("17845127845");
 
+
+mysql> insert into `users` (email, phone)
+values ("sjxiang@qq.com", "1112222333");
