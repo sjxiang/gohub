@@ -3,15 +3,54 @@
 package requests
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
 )
+
+
+// 验证函数类型
+type ValidatorFunc func(interface{}, *gin.Context) map[string][]string
+
+
+func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
+
+	// 1. 解析请求，支持 JSON 数据
+	if err := c.ShouldBindJSON(obj); err != nil {
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
+			"message": "请求解析错误，请确认请求格式是否正确。",
+			"error": err.Error,
+		})
+		
+		fmt.Println(err.Error())
+		return false
+	}
+
+	// 2. 表单验证
+	errs := handler(obj, c)  // 回调函数 包装 requests 包下面的 ValidateSignupEmailExist 等方法
+
+	// 3. 判断验证是否通过
+	if len(errs) > 0 {
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
+			"message": "请求验证不通过，具体请查看 errors",
+			"errors": errs,
+		})
+		return false
+	}
+
+	return true
+}
+
+
+// === 
 
 type SignupPhoneExistRequest struct {
 	Phone string  `json:"phone,omitempty" valid:"phone"`
 }
 
-func ValidateSignupPhoneExist(data interface{}, c *gin.Context) map[string][]string {
+func SignupPhoneExist(data interface{}, c *gin.Context) map[string][]string {
 	
 	// 自定义规则
 	rules := govalidator.MapData{
@@ -26,25 +65,19 @@ func ValidateSignupPhoneExist(data interface{}, c *gin.Context) map[string][]str
 		},
 	} 
 
-	// 配置初始化
-	opts := govalidator.Options{
-		Data: data,
-		Rules: rules,
-		TagIdentifier: "valid",  // model 中的 Struct 标签标识符
-		Messages: messages,
-	}
-
-	// 开始验证
-	return govalidator.New(opts).ValidateStruct()
+	return validate(data, rules, messages)
 }
 
 
+
+// ===
 
 type SignupEmailExistRequest struct {
 	Email string `json:"email,omitempty" valid:"email"`
 }
 
-func ValidateSignupEmailExist(data interface{}, c *gin.Context) map[string][]string {
+
+func SignupEmailExist(data interface{}, c *gin.Context) map[string][]string {
 	
 	// 自定义验证规则
 	rules := govalidator.MapData{
@@ -61,11 +94,19 @@ func ValidateSignupEmailExist(data interface{}, c *gin.Context) map[string][]str
 		},
 	}
 
-	// 配置初始化
-	opts := govalidator.Options{
+	// 开始验证
+	return validate(data, rules, messages)
+}
+
+
+// 重构
+func validate(data interface{}, rules govalidator.MapData, messages govalidator.MapData) map[string][]string {
+
+	// 配置选项
+	opts := govalidator.Options {
 		Data: data,
 		Rules: rules,
-		TagIdentifier: "valid",  // 模型中的 struct 标示符
+		TagIdentifier: "valid",  // 模型中的 Struct 标签标识符
 		Messages: messages,
 	}
 
