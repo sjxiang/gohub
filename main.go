@@ -17,6 +17,9 @@ func init() {
 
 	// 初始化 DB
 	bootstrap.SetupDB()
+
+	// 初始化 Logger
+	bootstrap.SetupLogger()
 	
 }
 

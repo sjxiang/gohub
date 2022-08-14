@@ -7,5 +7,10 @@ type App struct {
 	Key 		string `mapstructure:"key"`    // 加密会话，JWT 加密
 	URL 		string `mapstructure:"app_url"`
 	TimeZone 	string `mapstructure:"timezone"` // 设置时区，JWT 里会用到，日志记录里面也会用到
+	Env         string `mapstructure:"env"`
 }
 
+
+func (a *App) Islocal() bool {
+	return a.Env == "local"
+}
