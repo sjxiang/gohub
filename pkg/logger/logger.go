@@ -81,7 +81,7 @@ func getLogWriter() zapcore.WriteSyncer {
 	// 按照日期记录 log
 	filename := "./tmp/logs/test.log"
 	datename := time.Now().Format("2006-01-02")
-	filename = strings.ReplaceAll(filename, "test.log", datename)
+	filename = strings.ReplaceAll(filename, "test", datename)
 
 	// 滚动日志，使用 lumberjack 实现日志切割
 	lumberJackLogger := &lumberjack.Logger{

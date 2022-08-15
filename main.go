@@ -26,6 +26,10 @@ func init() {
 
 func main() {
 	
+	// 设置 gin 的运行模式，支持 debug、release、test
+	// release 会屏蔽调试信息，官方建议生产环境中使用
+	gin.SetMode(gin.ReleaseMode)
+	
 	// new 一个 Gin Engine 实例（指针对象，不会被逃逸分析或垃圾回收干掉，尽情配置）
 	router := gin.New() 
 
