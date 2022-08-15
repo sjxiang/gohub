@@ -12,7 +12,6 @@ type Config struct {
 	App           App           `mapstructure:"app"`
 	Mysql         Mysql         `mapstructure:"mysql"`
 	Redis         Redis         `mapstructure:"redis"`
-	Log           Log           `mapstructure:"log"`
 }
 
 /* 

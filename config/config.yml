@@ -5,7 +5,7 @@ app:
   key: 3302145ugaidgiavbdUVSDIGI8uvdasivua
   app_url: http://localhost:9090
   timezone: Asia/Shanghai  
-  env: local  # 可选有，local testing production
+  env: local  # 可选有，local / testing / production
   
 
 mysql:
@@ -27,13 +27,3 @@ redis:
   min_idle_conn: 500
   pool_size: 100
   max_retries: 3
-
-
-log:
-  level: debug
-  type: daily
-  file_path: storge/logs/logs.log
-  max_size: 64
-  max_backup: 5
-  max_age: 30
-  compress: false
