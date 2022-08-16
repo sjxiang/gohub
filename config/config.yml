@@ -25,3 +25,14 @@ redis:
   port: 6379
   db: 1
   password: 
+
+
+captcha:
+  height: 80
+  width: 240
+  length: 6
+  maxskew: 0.7
+  dotcount: 80
+  expire_time: 15
+  debug_expire_time: 10080
+  testing_key: captcha_skip_test
