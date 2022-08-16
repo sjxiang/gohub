@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
-	
+
 	"github.com/gin-gonic/gin"
 	"github.com/sjxiang/gohub/bootstrap"
 	"github.com/sjxiang/gohub/config"
+	"github.com/sjxiang/gohub/pkg/captcha"
+	"github.com/sjxiang/gohub/pkg/logger"
 )
 
 
@@ -38,6 +40,8 @@ func main() {
 
 	// 初始化路由绑定
 	bootstrap.SetupRoute(router)
+
+	logger.Dump(captcha.NewCaptcha().VerifyCaptcha("aJaNjbG7J6MFvJVsDY1G", "568092"), "正确的答案")
 
 
 	// 运行服务，指定监听端口为 3000
