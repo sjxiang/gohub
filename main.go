@@ -20,6 +20,9 @@ func init() {
 
 	// 初始化 Logger
 	bootstrap.SetupLogger()
+
+	// 初始化 Redis
+	bootstrap.SetupRedis()
 	
 }
 

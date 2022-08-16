@@ -32,6 +32,19 @@ services:
       --collation-server=utf8mb4_general_ci
 
 
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports: 
+      - "6379:6379"
+    volumes:
+      - /home/xsj/go/src/github.com/sjxiang/dev_script/tmp/redis/data:/data
+    command: redis-server --appendonly yes 
+    
+    # --requirepass 123456
+
+
   # mariadb:
   #   container_name: mariadb
   #   # image: mysql:5.7

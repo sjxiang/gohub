@@ -25,18 +25,17 @@ check_health:
 	@echo ''
 
 
-
-mysql_open:
+container_open:
 	@echo ''
-	@printf '$(OK_COLOR)打开 MySQL 容器服务 .. 🚀$(NO_COLOR)\n'
+	@printf '$(OK_COLOR)打开容器服务 .. 🚀$(NO_COLOR)\n'
 	@docker-compose -f ./deploy/docker-compose.yml up -d 
 	@printf '$(OK_COLOR) .. 🎯$(NO_COLOR)\n'
 	@echo ''
 
 
-mysql_shutdown:
+container_close:
 	@echo ''
-	@printf '$(OK_COLOR)关闭 MySQL 容器服务 .. 🚀$(NO_COLOR)\n'
+	@printf '$(OK_COLOR)关闭容器服务 .. 🚀$(NO_COLOR)\n'
 	@docker-compose -f ./deploy/docker-compose.yml down 
 	@printf '$(OK_COLOR) .. 🎯$(NO_COLOR)\n'
 	@echo ''
@@ -44,26 +43,39 @@ mysql_shutdown:
 
 
 
-mysql_login:
+login_mysql:
 	@echo ''
 	@printf '$(OK_COLOR)登录 MySQL 容器 .. 🚀$(NO_COLOR)\n'
 	@docker-compose -f ./deploy/docker-compose.yml exec mysql sh -c 'mysql -uroot -p${MYSQL_ROOT_PASSWORD}'
-	@printf '$(OK_COLOR) .. 🎯$(NO_COLOR)\n'
+	@printf '$(OK_COLOR)退出 .. 🎯$(NO_COLOR)\n'
 	@echo ''
 
 
-mysql_detail:
+
+login_redis:
 	@echo ''
-	@printf '$(OK_COLOR)查看 MySQL 容器配置 .. 🚀$(NO_COLOR)\n'
+	@printf '$(OK_COLOR)登录 Redis 容器 .. 🚀$(NO_COLOR)\n'
+	@docker-compose -f ./deploy/docker-compose.yml exec redis sh -c 'redis-cli'
+	@printf '$(OK_COLOR)退出 .. 🎯$(NO_COLOR)\n'
+	@echo ''
+
+ 
+container_detail:
+	@echo ''
+	@printf '$(OK_COLOR)查看容器配置 .. 🚀$(NO_COLOR)\n'
 	@docker-compose -f ./deploy/docker-compose.yml config
 	@printf '$(OK_COLOR) .. 🎯$(NO_COLOR)\n'
 	@echo ''
 
 
-mysql_net:
+container_net:
 	@echo ''
 	@printf '$(OK_COLOR)查看 MySQL 容器 IP 地址 .. 🚀$(NO_COLOR)\n'
 	@docker inspect mysql | grep IPAddress
+	@echo ''
+	@printf '$(OK_COLOR)查看 Redis 容器 IP 地址 .. 🚀$(NO_COLOR)\n'
+	@docker inspect redis | grep IPAddress
+	@echo ''
 	@printf '$(OK_COLOR) .. 🎯$(NO_COLOR)\n'
 	@echo ''
 

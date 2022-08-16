@@ -12,7 +12,7 @@ mysql:
   dbname: docker
   username: root
   password: 123456
-  host: 172.18.0.2
+  host: 172.18.0.3
   port: 3306
   charset: utf8mb4
   max_open_conn: 25
@@ -21,9 +21,7 @@ mysql:
 
 
 redis:
-  host: 127.0.0.1:6379
-  db: 0
-  password:
-  min_idle_conn: 500
-  pool_size: 100
-  max_retries: 3
+  host: 172.18.0.2
+  port: 6379
+  db: 1
+  password: 

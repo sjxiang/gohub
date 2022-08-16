@@ -32,7 +32,7 @@ func SetupDB() {
 
 
 	// 连接数据库，并设置 GORM 的日志模式
-	database.Connect(dbConfig, logger.Default.LogMode(logger.Info))
+	database.Connect(dbConfig, logger.Default.LogMode(logger.Info))  
 	
 	// 设置连接池（最大连接数、最大空闲连接数、每个连接的过期时间）
 	database.SQLDB.SetMaxOpenConns(config.Cfg.Mysql.MaxOpenConn)
