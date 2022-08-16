@@ -1,6 +1,6 @@
 // 存放系统中间件
 
-package middleware
+package middlewares
 
 import (
 	"bytes"
@@ -104,3 +104,5 @@ func Logger() gin.HandlerFunc {
 func MicrosecondStr(elapsed time.Duration) string {
 	return fmt.Sprintf("%.3f ms", float64(elapsed.Nanoseconds())/1e6)
 }
+
+
