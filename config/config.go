@@ -13,6 +13,7 @@ type Config struct {
 	Mysql         Mysql         `mapstructure:"mysql"`
 	Redis         Redis         `mapstructure:"redis"`
 	Captcha       Captcha       `mapstructure:"captcha"`
+	VerifyCode    VerifyCode    `mapstructure:"verifycode"`
 }
 
 /* 

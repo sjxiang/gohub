@@ -34,5 +34,9 @@ captcha:
   maxskew: 0.7
   dotcount: 80
   expire_time: 15
-  debug_expire_time: 10080
+  debug_expire_time: 10800
   testing_key: captcha_skip_test
+
+verifycode:
+  expire_time: 15
+  test_expire_time: 10800  # 开发时，延长过期时间

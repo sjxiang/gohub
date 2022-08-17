@@ -30,3 +30,7 @@ func (vc *VerifyCodeController) ShowCaptcha(c *gin.Context) {
 	})
 
 }
+
+
+
+
