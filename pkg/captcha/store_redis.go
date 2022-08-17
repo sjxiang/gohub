@@ -26,7 +26,7 @@ func (s *RedisStore) Set(key string, value string) error {
 
 	// 方便开发调试
 	if config.Cfg.App.Islocal() {
-		ExpireTime = time.Minute * time.Duration(config.Cfg.Captcha.DebugExpireTime)
+		ExpireTime = time.Minute * time.Duration(config.Cfg.Captcha.DebugExpireTime)  // 3 h
 	}
 
 	if ok := s.RedisClient.Set(s.KeyPrefix+key, value, ExpireTime); !ok {

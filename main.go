@@ -42,6 +42,7 @@ func main() {
 	bootstrap.SetupRoute(router)
 
 	logger.Dump(captcha.NewCaptcha().VerifyCaptcha("aJaNjbG7J6MFvJVsDY1G", "568092"), "正确的答案")
+	logger.Dump(captcha.NewCaptcha().VerifyCaptcha("aJaNjbG7J6MFvJVsDY1G", "568392"), "错误的答案")
 
 
 	// 运行服务，指定监听端口为 3000
