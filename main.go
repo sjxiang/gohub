@@ -2,20 +2,20 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/gin-gonic/gin"
+
 	"github.com/sjxiang/gohub/bootstrap"
-	"github.com/sjxiang/gohub/config"
-	"github.com/sjxiang/gohub/pkg/captcha"
-	"github.com/sjxiang/gohub/pkg/logger"
+	"github.com/sjxiang/gohub/conf"
 )
 
 
 
 func init() {
 	
-	// 加载 config 目录下的配置信息 
-	config.LoadConfig()
+	// 从配置文件读取配置
+	conf.Init()
 
 	// 初始化 DB
 	bootstrap.SetupDB()
@@ -41,12 +41,12 @@ func main() {
 	// 初始化路由绑定
 	bootstrap.SetupRoute(router)
 
-	logger.Dump(captcha.NewCaptcha().VerifyCaptcha("aJaNjbG7J6MFvJVsDY1G", "568092"), "正确的答案")
-	logger.Dump(captcha.NewCaptcha().VerifyCaptcha("aJaNjbG7J6MFvJVsDY1G", "568392"), "错误的答案")
+	// logger.Dump(captcha.NewCaptcha().VerifyCaptcha("aJaNjbG7J6MFvJVsDY1G", "568092"), "正确的答案")
+	// logger.Dump(captcha.NewCaptcha().VerifyCaptcha("aJaNjbG7J6MFvJVsDY1G", "568392"), "错误的答案")
 
 
 	// 运行服务，指定监听端口为 3000
-	err := router.Run(fmt.Sprintf(":%v", config.Cfg.App.Port))
+	err := router.Run(fmt.Sprintf(":%v", os.Getenv("APP_PORT")))
 	if err != nil {
 
 		// 错误处理，端口被占用或其他错误

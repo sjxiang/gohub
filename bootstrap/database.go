@@ -1,11 +1,10 @@
 package bootstrap
 
 import (
-	"fmt"
+	"os"
 	"time"
 
 	"github.com/sjxiang/gohub/app/data/user"
-	"github.com/sjxiang/gohub/config"
 	"github.com/sjxiang/gohub/pkg/database"
 
 	"gorm.io/driver/mysql"
@@ -17,15 +16,8 @@ import (
 func SetupDB() {
 	
 	var dbConfig gorm.Dialector	
-	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=%v&parseTime=True&multiStatements=true&loc=Local",
-		config.Cfg.Mysql.Username,
-		config.Cfg.Mysql.Password,
-		config.Cfg.Mysql.Host,
-		config.Cfg.Mysql.Port,
-		config.Cfg.Mysql.DBName,
-		config.Cfg.Mysql.Charset,
-	)
-
+	dsn := os.Getenv("MYSQL_DSN")
+	
 	dbConfig = mysql.New(mysql.Config{
 		DSN: dsn,
 	})
@@ -35,9 +27,9 @@ func SetupDB() {
 	database.Connect(dbConfig, logger.Default.LogMode(logger.Info))  
 	
 	// 设置连接池（最大连接数、最大空闲连接数、每个连接的过期时间）
-	database.SQLDB.SetMaxOpenConns(config.Cfg.Mysql.MaxOpenConn)
-	database.SQLDB.SetMaxIdleConns(config.Cfg.Mysql.MaxIdleConn)
-	database.SQLDB.SetConnMaxLifetime(time.Duration(config.Cfg.Mysql.ConnMaxLifeSecond) * time.Second)
+	database.SQLDB.SetMaxOpenConns(20)  // 打开
+	database.SQLDB.SetMaxIdleConns(10)  // 空闲
+	database.SQLDB.SetConnMaxLifetime(time.Duration(300) * time.Second)
 
 	// 自动迁移
 	database.DB.AutoMigrate((&user.User{}))

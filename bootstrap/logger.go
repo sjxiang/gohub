@@ -6,7 +6,9 @@ import (
 
 // SetupLogger 初始化 Logger
 func SetupLogger() {
+	
 	var level = "debug"
+
 	logger.InitLogger(level)
 }
 

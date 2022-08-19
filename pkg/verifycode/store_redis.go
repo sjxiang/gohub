@@ -3,31 +3,34 @@ package verifycode
 import (
 	"time"
 
-	"github.com/sjxiang/gohub/config"
-	"github.com/sjxiang/gohub/pkg/redis"
+	"github.com/sjxiang/gohub/conf"
+	"github.com/sjxiang/gohub/pkg/cache"
 )
 
 // RedisStore 实现 verifycode.Store interface
 type RedisStore struct {
-	RedisClient *redis.RedisClient
+	RedisClient *cache.RedisClient
 	KeyPrefix string
 }
 
+
 func (s *RedisStore) Set(key string, value string) bool {
 
-	ExpiredTime := time.Minute * time.Duration(config.Cfg.VerifyCode.ExpireTime)  // 15 Min
-	
-	// local dev 本地开发环境
-	if config.Cfg.App.Islocal() {
-		ExpiredTime = time.Minute * time.Duration(config.Cfg.VerifyCode.TestExpireTime)  // 3 h
-	}
+	TTL := time.Minute * time.Duration(30)  // 30 Min TTL 存活时间
 
-	return s.RedisClient.Set(s.KeyPrefix+key, value, ExpiredTime)
+	if conf.IsLocal() {
+		TTL = time.Minute * time.Duration(300)  // 3 h
+	}
+	
+	return s.RedisClient.Set(s.KeyPrefix+key, value, TTL)
 }
 
+
 func (s *RedisStore) Get(key string, clear bool) string {
+	
 	key = s.KeyPrefix + key
 	val := s.RedisClient.Get(key)
+
 	if clear {
 		s.RedisClient.Del(key)
 	}

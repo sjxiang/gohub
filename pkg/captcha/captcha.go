@@ -4,11 +4,12 @@ package captcha
 
 import (
 	"fmt"
+	"os"
 	"sync"
 
 	"github.com/mojocn/base64Captcha"
-	"github.com/sjxiang/gohub/config"
-	"github.com/sjxiang/gohub/pkg/redis"
+	"github.com/sjxiang/gohub/conf"
+	"github.com/sjxiang/gohub/pkg/cache"
 )
 
 type Captcha struct {
@@ -22,7 +23,7 @@ var once sync.Once
 // internalCaptcha 内部使用的 Captcha 对象
 var internalCaptcha *Captcha
 
-// 
+
 func NewCaptcha() *Captcha {
 	once.Do(func() {
 
@@ -31,17 +32,17 @@ func NewCaptcha() *Captcha {
 
 		// 使用全局 Redis 对象，并配置存储 key 的前缀
 		store := RedisStore{
-			RedisClient: redis.Redis,
-			KeyPrefix: fmt.Sprintf("%s :Captcha", config.Cfg.App.Name),
+			RedisClient: cache.Redis,
+			KeyPrefix: fmt.Sprintf("%s - Captcha", os.Getenv("APP_NAME")),
 		}
 
 		// 配置 base64Captcha 驱动信息
 		driver := base64Captcha.NewDriverDigit(
-			config.Cfg.Captcha.Height,
-			config.Cfg.Captcha.Width,
-			config.Cfg.Captcha.Length,
-			config.Cfg.Captcha.Maxskew,
-			config.Cfg.Captcha.Dotcount,
+			80,   // 验证码图片高度
+			240,  // 验证码图片宽度
+			6,    // 验证码的长度 
+			0.7,  // 数字的最大倾斜角度
+			80,   // 图片背景里的混淆点数量
 		)
 
 		// 实例化 base64Captcha 并赋值给内部使用的 internalCaptcha 对象
@@ -59,7 +60,8 @@ func (c *Captcha) GenerateCaptcha() (id string, b64s string, err error) {
 // VerifyCaptcha 验证码是否正确
 func (c *Captcha) VerifyCaptcha(id string, answer string) (match bool) {
 
-	if id == config.Cfg.Captcha.Testingkey {
+	// 方便测试
+	if conf.IsLocal() && id == os.Getenv("Captcha_TestingKey")  {
 		return true
 	}
 

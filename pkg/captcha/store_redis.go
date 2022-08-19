@@ -6,14 +6,14 @@ import (
 	"errors"
 	"time"
 
-	"github.com/sjxiang/gohub/config"
-	"github.com/sjxiang/gohub/pkg/redis"
+	"github.com/sjxiang/gohub/conf"
+	"github.com/sjxiang/gohub/pkg/cache"
 )
 
-// 自定义存储驱动 
+// 自定义存储驱动
 // RedisStore 实现 base64Captcha.Store.interface
 type RedisStore struct {
-	RedisClient *redis.RedisClient
+	RedisClient *cache.RedisClient
 	KeyPrefix string
 }
 
@@ -22,14 +22,14 @@ type RedisStore struct {
 // Set 实现 base654Captcha.Store interface 的 Set 方法
 func (s *RedisStore) Set(key string, value string) error {
 
-	ExpireTime := time.Minute * time.Duration(config.Cfg.Captcha.ExpireTime)  // 15 Min
+	TTL := time.Minute * time.Duration(30)  // 30 Min
 
 	// 方便开发调试
-	if config.Cfg.App.Islocal() {
-		ExpireTime = time.Minute * time.Duration(config.Cfg.Captcha.DebugExpireTime)  // 3 h
+	if conf.IsLocal() {
+		TTL = time.Minute * time.Duration(300)  // 3 h
 	}
 
-	if ok := s.RedisClient.Set(s.KeyPrefix+key, value, ExpireTime); !ok {
+	if ok := s.RedisClient.Set(s.KeyPrefix+key, value, TTL); !ok {
 		return errors.New("无法存储图片验证码答案")
 	}
 

@@ -32,6 +32,4 @@ func Connect(dbConfig gorm.Dialector, _logger gormLogger.Interface) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	
-
 }

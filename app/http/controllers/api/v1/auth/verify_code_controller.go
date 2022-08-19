@@ -32,5 +32,6 @@ func (vc *VerifyCodeController) ShowCaptcha(c *gin.Context) {
 }
 
 
+// func (vc *VerifyCodeController) SendEmail(email string) error {
 
-
+// }

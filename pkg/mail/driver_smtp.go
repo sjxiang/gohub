@@ -1,8 +1,8 @@
 package mail
 
 import (
-	"fmt"
 	"net/smtp"
+	"os"
 
 	emailPKG "github.com/jordan-wright/email"
 	"github.com/sjxiang/gohub/pkg/logger"
@@ -12,27 +12,24 @@ import (
 type SMTP struct{}
 
 // Send 实现 email.Driver interface 的 Send 方法
-func (S *SMTP) Send(email Email, config map[string]string) bool {
+func (S *SMTP) Send(email Email) bool {
 	
 	e := emailPKG.NewEmail()
 
-	e.From = fmt.Sprintf("%v <%v>", email.From.Name, email.From.Addr)
+	e.From = email.From
 	e.To = email.To
-	e.Bcc = email.Bcc
-	e.Cc = email.Cc
 	e.Subject = email.Subject
 	e.Text = email.Text
-	e.HTML = email.HTML
 
 	logger.DebugJSON("发送邮件", "发送详情", e)
 
 	err := e.Send(
-		fmt.Sprintf("%v:%v", config["Host"], config["Port"]),
+		"smtp.qq.com",
 		smtp.PlainAuth(
 			"",
-			config["Username"], 
-			config["Password"], 
-			config["Host"],
+			os.Getenv("VERIFYCODE_FROM"),  // 服务器邮箱账号
+			os.Getenv("VERIFYCODE_QQEmailAuthCode"),  // 授权码
+			"smtp.qq.com",
 		),
 	)
 

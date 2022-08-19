@@ -5,19 +5,11 @@ import (
 )
 
 
-type From struct {
-	Addr string
-	Name string
-}
-
 type Email struct {
-	From 	From 
-	To 		[]string
-	Bcc 	[]string
-	Cc 		[]string
-	Subject string
-	Text 	[]byte     // 明文信息（可选）
-	HTML 	[]byte     // HTML 信息（可选）
+	From 	string      // 发送方的邮箱，服务器邮箱
+	To 		[]string    // 接收方的邮箱，注册登录用户的真实邮箱
+	Subject string      // 邮件主题 "Gohub 登录"
+	Text 	[]byte      // 邮件内容 "验证码 123456"（明文信息） 
 }
 
 
@@ -41,14 +33,6 @@ func NewMailer() *Mailer {
 }
 
 
-
 func (mailer *Mailer) Send(email Email) bool {
-	m := map[string]string{
-		"Host": "localhost",
-		"Port": "1025",
-		"Username": "",
-		"Password": "",
-	}
-
-	return mailer.Driver.Send(email, m)
+	return mailer.Driver.Send(email)
 }

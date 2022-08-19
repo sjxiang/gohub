@@ -2,15 +2,16 @@
 package verifycode
 
 import (
-	"math/rand"
-    "strings"
-    "sync"
-	"time"
+	"os"
+	"strings"
+	"sync"
 
-	
-	"github.com/sjxiang/gohub/config"
-	"github.com/sjxiang/gohub/pkg/redis"
+
+	"github.com/sjxiang/gohub/conf"
 	"github.com/sjxiang/gohub/pkg/logger"
+	// "github.com/sjxiang/gohub/pkg/mail"
+	"github.com/sjxiang/gohub/pkg/cache"
+	"github.com/sjxiang/gohub/pkg/util"
 )
 
 type VerifyCode struct {
@@ -20,19 +21,45 @@ type VerifyCode struct {
 var once sync.Once
 var internalVerifyCode *VerifyCode
 
+
 // NewVerifyCode 单例模式获取
 func NewVerifyCode() *VerifyCode {
     once.Do(func() {
         internalVerifyCode = &VerifyCode{
             Store: &RedisStore{
-                RedisClient: redis.Redis,
+                RedisClient: cache.Redis,
                 // 增加前缀保持数据库整洁，出问题调试时也方便
-                KeyPrefix: config.Cfg.App.Name + ":verifycode:",
+                KeyPrefix: os.Getenv("APP_NAME") + ":verifycode:",
             },
         }
     })
 
     return internalVerifyCode
+}
+
+
+func (vc *VerifyCode) SendEmail(email string) error {
+    
+    // 生成验证码
+    // code := vc.generateVerifyCode(email)
+
+    // 方便本地和 API 自动测试
+    if conf.IsLocal() && strings.HasSuffix(email, "@qq.com") {
+        return nil
+    }
+
+    // content := fmt.Sprintf("<h1>您的 Email 验证码是 %v </h1>", code)
+
+    // // 发送邮件
+    // mail.NewMailer().Send(mail.Email{
+    //     From: os.Getenv(""),
+    //     To: []string{email},
+    //     Subject: "1",
+    //     Text: "1",
+    // })
+        
+    return nil
+
 }
 
 
@@ -43,23 +70,24 @@ func (vc *VerifyCode) CheckAnswer(key string, answer string) bool {
 
     // 方便开发，在非生产环境下，具备特殊前缀的手机号和 Email后缀，会直接验证成功
 	// "verifycode.debug_email_suffix"
-	// verifycode.debug_phone_prefix
+	// "verifycode.debug_phone_prefix"
 
-    if config.Cfg.App.Islocal() && (strings.HasSuffix(key, "@test.com") || strings.HasPrefix(key, "000")) {
+    if conf.IsLocal() && (strings.HasSuffix(key, "@test.com") || strings.HasPrefix(key, "000")) {
 		return true
 	}
 	
     return vc.Store.Verify(key, answer, false)
 }
 
+
 // generateVerifyCode 生成验证码，并放置于 Redis 中
 func (vc *VerifyCode) generateVerifyCode(key string) string {
 
     // 生成随机码
-    code := RandStringRunes(6)  // verifycode.code_length 6
+    code := util.RandStringRunes(6)  // verifycode.code_length 6
 
     // 为方便开发，本地环境使用固定验证码
-	if config.Cfg.App.Islocal() {
+	if conf.IsLocal() {
 		code = "123456"  // verifycode.debug_code
 	}
 
@@ -70,16 +98,3 @@ func (vc *VerifyCode) generateVerifyCode(key string) string {
     return code
 }
 
-
-
-// RandStringRunes 返回随机字符串  生成长度为 length 随机数字字符串
-func RandStringRunes(length int) string {
-	var letterRunes = []rune("1234567890")  // abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-
-	rand.Seed(time.Now().UnixNano())
-	b := make([]rune, length)
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
-	}
-	return string(b)
-}

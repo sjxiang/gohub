@@ -1,6 +1,6 @@
-// 封装的目的，解耦业务代码与依赖包的关系
+// 客户端封装
 
-package redis
+package cache
 
 import (
 	"context"
@@ -20,7 +20,7 @@ type RedisClient struct {
 // once 确保全局的 Redis 对象只实例一次
 var once sync.Once
 
-// Redis 全局 Redis，使用 db 1
+// Redis 全局 Redis，使用 db 0
 var Redis *RedisClient
 
 
@@ -32,7 +32,7 @@ func ConnectToRedis(address string,  password string, db int) {
 }
 
 
-// 
+
 func NewClient(address string, password string, db int) *RedisClient {
 
 	// 初始化自定义的 RedisClient 实例
@@ -41,14 +41,14 @@ func NewClient(address string, password string, db int) *RedisClient {
 	// 使用默认的 context
 	rds.Context = context.Background()
 
-	// 使用 redis 包里的 NewClient 初始化连接
+	// 初始化连接
 	rds.Client = redis.NewClient(&redis.Options{
 		Addr: address,
 		Password: password,
 		DB: db,
 	})
 
-	// 测试连接
+	// 测试一下连接
 	err := rds.Ping()
 	logger.LogIf(err)
 
@@ -63,9 +63,9 @@ func (rds RedisClient) Ping() error {
 }
 
 
-// Set 存储 key 对应的 value，且设置 expiration 过期时间
-func (rds RedisClient) Set(key string, value interface{}, expiration time.Duration) bool {
-	if err := rds.Client.Set(rds.Context, key, value, expiration).Err(); err != nil {
+// Set 存储 key 对应的 value，且设置 TTL 过期时间
+func (rds RedisClient) Set(key string, value interface{}, TTL time.Duration) bool {
+	if err := rds.Client.Set(rds.Context, key, value, TTL).Err(); err != nil {
 		logger.ErrorString("Redis", "Set", err.Error())
 		return false
 	}
@@ -127,7 +127,6 @@ func (rds RedisClient) FlushDB() bool {
  
 // Increment 当参数只有 1 个时，参数为 key，其值增加 1。
 //           当参数有 2 个时，第一个参数为 key，第二个参数为要增加的值 int64 类型
-
 func (rds RedisClient) Increment(params ...interface{}) bool {
 	switch len(params) {
 	case 1:
