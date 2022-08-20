@@ -18,7 +18,7 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 	if err := c.ShouldBindJSON(obj); err != nil {
 		response.BadRequest(c, err, "请求解析错误，请确认格式是否正确。上传文件请使用 multipart 标头，参数请使用 JSON 格式。")
 		// c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-		// 	"message": "请求解析错误，请确认请求格式是否正确。",
+		// 	"message": "请求解析错误，请确认请求格式是否正确。上传文件请使用 multipart 标头，参数请使用 JSON 格式。",
 		// 	"error": err.Error,
 		// })
 		
@@ -27,7 +27,7 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 	}
 
 	// 2. 表单验证
-	errs := handler(obj, c)  // 回调函数 包装 requests 包下面的 ValidateSignupEmailExist 等方法
+	errs := handler(obj, c)  // 回调函数，钩子 包装 requests 包下面的 ValidateSignupEmailExist 等方法
 
 	// 3. 判断验证是否通过
 	if len(errs) > 0 {

@@ -24,7 +24,7 @@ func (S *SMTP) Send(email Email) bool {
 	logger.DebugJSON("发送邮件", "发送详情", e)
 
 	err := e.Send(
-		"smtp.qq.com",
+		"smtp.qq.com:25",
 		smtp.PlainAuth(
 			"",
 			os.Getenv("VERIFYCODE_FROM"),  // 服务器邮箱账号

@@ -3,7 +3,7 @@ package verifycode
 
 type Store interface {
 
-	// 保存验证码 <key, value>
+	// 保存验证码
 	Set(id string, value string) bool
 
 	// 获取验证码

@@ -42,8 +42,7 @@ services:
       - /home/xsj/go/src/github.com/sjxiang/dev_script/tmp/redis/data:/data
     command: redis-server --appendonly yes 
     
-    # --requirepass 123456
-
+    
 
   # mariadb:
   #   container_name: mariadb

@@ -3,7 +3,6 @@
 package captcha
 
 import (
-	"fmt"
 	"os"
 	"sync"
 
@@ -33,7 +32,7 @@ func NewCaptcha() *Captcha {
 		// 使用全局 Redis 对象，并配置存储 key 的前缀
 		store := RedisStore{
 			RedisClient: cache.Redis,
-			KeyPrefix: fmt.Sprintf("%s - Captcha", os.Getenv("APP_NAME")),
+			KeyPrefix: os.Getenv("APP_NAME") + ":Captcha:",
 		}
 
 		// 配置 base64Captcha 驱动信息
