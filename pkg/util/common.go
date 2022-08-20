@@ -2,21 +2,30 @@ package util
 
 import (
 	"time"
-	"math/rand"
+	mathrand "math/rand"
+	// "crypto/rand"
 )
 
 // RandStringRunes 生成长度为 length 随机数字字符串
 func RandStringRunes(length int) string {
+	mathrand.Seed(time.Now().UnixNano())
 	var letterRunes = []rune("1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")  
 
-	rand.Seed(time.Now().UnixNano())
-	
 	b := make([]rune, length)
 	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+		b[i] = letterRunes[mathrand.Intn(len(letterRunes))]
 	}
 	
 	return string(b)
 }
 
 
+
+// FirstElement 安全地获取 args[0]，避免 panic: runtime error: index out of range
+func FirstElement(args []string) string {
+	if len(args) > 0 {
+		return args[0]
+	}
+
+	return ""
+}
