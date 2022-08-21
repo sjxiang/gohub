@@ -1,4 +1,14 @@
 
+
+# 测试文档 
+
+前置条件：
+1. docker-compose 装好
+2. 运行 make container_open，启动 mysql、redis 容器
+3. 运行 make container_net，查看 mysql、redis 的网络地址
+4. 修改 .env 相关环境配置参数
+
+
 # 测试请求 - 服务器连通性
 
 curl  http://localhost:9090/v1/ping
@@ -32,3 +42,6 @@ curl "http://localhost:9090/v1/auth/verify-codes/captcha" -X POST
 curl --request POST 'http://localhost:9090/v1/auth/verify-codes/email' \
 --header 'Content-Type: application/json' \
 --data-raw '{"email": "1535484943@qq.com", "captcha_id": "pass123", "captcha_answer": "123456"}'
+
+
+
