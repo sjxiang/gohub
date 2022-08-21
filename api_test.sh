@@ -45,3 +45,18 @@ curl --request POST 'http://localhost:9090/v1/auth/verify-codes/email' \
 
 
 
+# 测试请求 - 用户注册（Email + 邮件验证码）
+
+
+curl --request POST 'http://localhost:9090/v1/auth/signup/using-email' \
+--header 'Content-Type: application/json' \
+--data-raw '{"email": "1535484943@qq.com", "name": "sjxiang", "password": "123456", "password_confirm": "123456", "verify_code": "654321"}'
+
+
+
+
+2022-08-22 00:50:23	[35mDEBUG[0m	validators/custom_rules.go:54	'Database Query	{"sql": "SELECT count(*) FROM `users` WHERE name = 'sjxiang'", "time": "0.568 ms", "rows": 1}
+2022-08-22 00:50:23	[35mDEBUG[0m	validators/custom_rules.go:54	'Database Query	{"sql": "SELECT count(*) FROM `users` WHERE email = '1535484943@qq.com'", "time": "0.559 ms", "rows": 1}
+2022-08-22 00:50:23	[35mDEBUG[0m	verifycode/verifycode.go:68	验证码	{"检查验证码": "{\"1535484943@qq.com\":\"654321\"}"}
+2022-08-22 00:50:23	[35mDEBUG[0m	user/user_util.go:25	'Database Query	{"sql": "INSERT INTO `users` (`name`,`email`,`phone`,`password`,`created_at`,`updated_at`) VALUES ('sjxiang','1535484943@qq.com','','123456','2022-08-22 00:50:23.9','2022-08-22 00:50:23.9')", "time": "7.971 ms", "rows": 1}
+2022-08-22 00:50:23	[35mDEBUG[0m	middlewares/logger.go:97	HTTP 访问日志	{"status": 201, "request": "POST /v1/auth/signup/using-email", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.81.0", "errors": "", "time": "9.653 ms", "Request Body": "", "Response Body": "{\"data\":{\"id\":5,\"name\":\"sjxiang\",\"created_at\":\"2022-08-22T00:50:23.9+08:00\",\"updated_at\":\"2022-08-22T00:50:23.9+08:00\"}}"}

@@ -68,7 +68,7 @@ func (vc *VerifyCode) CheckAnswer(key string, answer string) bool {
     logger.DebugJSON("验证码", "检查验证码", map[string]string{key: answer})
 
     // 方便开发，在非生产环境下，具备特殊前缀的手机号和 Email后缀，会直接验证成功
-    if conf.IsLocal() && (strings.HasSuffix(key, os.Getenv("VERIFYCODE_DEBUG_EMAIL_SUFFIX")) || strings.HasPrefix(key, "VERIFYCODE_DEBUG_PHONE_PREFIX")) {
+    if conf.IsLocal() && (strings.HasSuffix(key, os.Getenv("VERIFYCODE_DEBUG_EMAIL_SUFFIX")) ){
 		return true
 	}
 	

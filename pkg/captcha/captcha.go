@@ -59,7 +59,7 @@ func (c *Captcha) GenerateCaptcha() (id string, b64s string, err error) {
 // VerifyCaptcha 验证码是否正确
 func (c *Captcha) VerifyCaptcha(id string, answer string) (match bool) {
 
-	// 方便测试
+	// 方便测试，如果本地开发且验证码则跳过测试
 	if conf.IsLocal() && id == os.Getenv("Captcha_TestingKey")  {
 		return true
 	}

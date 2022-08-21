@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sjxiang/gohub/pkg/logger"
+	"github.com/sjxiang/gohub/pkg/util"
 	"go.uber.org/zap"
 )
 
@@ -65,7 +66,7 @@ func Logger() gin.HandlerFunc {
 			zap.String("ip", ctx.ClientIP()),
 			zap.String("user-agent", ctx.Request.UserAgent()),
 			zap.String("errors", ctx.Errors.ByType(gin.ErrorTypePrivate).String()),
-			zap.String("time", MicrosecondsStr(cost)),
+			zap.String("time", util.MicrosecondsStr(cost)),
 		}
 
 		if ctx.Request.Method == "POST" || ctx.Request.Method == "PUT" || ctx.Request.Method == "DELETE" {
@@ -98,11 +99,5 @@ func Logger() gin.HandlerFunc {
 	}
 }
 
-
-
-// 将 time.Duration（nano seconds 为单位）输出为小数点后 3 位数 ms（mircosecond 毫秒，千分之一秒）
-func MicrosecondsStr(elapsed time.Duration) string {
-	return fmt.Sprintf("%.3f ms", float64(elapsed.Nanoseconds())/1e6)
-}
 
 

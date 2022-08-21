@@ -19,3 +19,8 @@ func IsPhoneExist(phone string) bool {
 	return count > 0
 }
 
+
+// Create 创建用户，通过 User.ID 来判断是否创建成功
+func (userModel *User) Create() {
+	database.DB.Create(&userModel)
+} 
