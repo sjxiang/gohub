@@ -54,7 +54,7 @@ func (sc *SignupController) IsEmailExist(c *gin.Context) {
 func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
 
 
-	// 1. 验证表单
+	// 1. 验证表单（数据是否合法）
 	request := requests.SignupUsingEmailRequest{}
 	if ok := requests.Validate(c, &request, requests.SignupUsingEmail); !ok {
 		return
