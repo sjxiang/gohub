@@ -2,8 +2,9 @@ package util
 
 import (
 	"fmt"
-	"time"
 	mathrand "math/rand"
+	"os"
+	"time"
 	// "crypto/rand"
 )
 
@@ -21,11 +22,15 @@ func RandStringRunes(length int) string {
 }
 
 
-
-
-
 // 将 time.Duration（nano seconds 为单位）输出为小数点后 3 位数 ms（mircosecond 毫秒，千分之一秒）
 func MicrosecondsStr(elapsed time.Duration) string {
 	return fmt.Sprintf("%.3f ms", float64(elapsed.Nanoseconds())/1e6)
+}
+
+
+// TimenowInTimezone 获取当前时间，支持时区
+func TimenowInTimezone() time.Time {
+	chinaTimezone, _ := time.LoadLocation(os.Getenv("APP_Timezone"))
+	return time.Now().In(chinaTimezone)
 }
 

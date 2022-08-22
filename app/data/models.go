@@ -1,10 +1,11 @@
-
 // 数据模型 model 通用属性和方法
 
 package data
 
-import "time"
-
+import (
+	"fmt"
+	"time"
+)
 
 // 基类 Model
 type BaseModel struct {
@@ -19,3 +20,7 @@ type CommonTimestampsField struct {
 }
 
 
+// GetStringID 获取 ID 的字符串格式
+func (a BaseModel) GeyStringID() string {
+	return fmt.Sprintf("%v", a.ID)
+} 
