@@ -58,7 +58,7 @@ curl --request POST 'http://localhost:9090/v1/auth/signup/using-email' \
 
 curl --request POST 'http://localhost:9090/v1/auth/signup/using-email' \
 --header 'Content-Type: application/json' \
---data-raw '{"email": "1554849er4@test.com", "name": "sjxiang13", "password": "123456", "password_confirm": "123456", "verify_code": "654321"}'
+--data-raw '{"email": "1554849r4@test.com", "name": "sjxiang14", "password": "123456", "password_confirm": "123456", "verify_code": "654321"}'
 
 
 
@@ -124,7 +124,15 @@ HTTP 访问日志
 2022-08-22 17:46:54     DEBUG   verifycode/verifycode.go:68     验证码  {"检查验证码": "{\"1554849er4@test.com\":\"654321\"}"}
 2022-08-22 17:46:55     WARN    user/user_util.go:28    Database Slow Log       {"sql": "INSERT INTO `users` (`name`,`email`,`phone`,`password`,`created_at`,`updated_at`) VALUES ('sjxiang13','1554849er4@test.com','','$2a$14$2ASG9bTqBPc6XQmeqsDw3eMBoxcs6j62M8Hyz/wsdZOBgEvCxSG9u','2022-08-22 17:46:55.479','2022-08-22 17:46:55.479')", "time": "800.508 ms", "rows": 1}
 2022-08-22 17:46:55     DEBUG   user/user_util.go:28    'Database Query {"sql": "INSERT INTO `users` (`name`,`email`,`phone`,`password`,`created_at`,`updated_at`) VALUES ('sjxiang13','1554849er4@test.com','','$2a$14$2ASG9bTqBPc6XQmeqsDw3eMBoxcs6j62M8Hyz/wsdZOBgEvCxSG9u','2022-08-22 17:46:55.479','2022-08-22 17:46:55.479')", "time": "800.508 ms", "rows": 1}
-2022-08-22 17:46:55     DEBUG   middlewares/logger.go:97        HTTP 访问日志   {"status": 201, "request": "POST /v1/auth/signup/using-email", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.81.0", "errors": "", "time": "802.503 ms", "Request Body": "", "Response Body": "{\"data\":{\"id\":9,\"name\":\"sjxiang13\",\"created_at\":\"2022-08-22T17:46:55.479+08:00\",\"updated_at\":\"2022-08-22T17:46:55.479+08:00\"},\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOSIsInVzZXJfbmFtZSI6InNqeGlhbmcxMyIsImV4cGlyZV90aW1lIjoxNjY2MzQ1NjE1LCJleHAiOjE2NjYzNDU2MTUsImlhdCI6MTY2MTE2MTYxNSwiaXNzIjoiR29odWIiLCJuYmYiOjE2NjExNjE2MTV9.rllLpfgc7XNxdk508kyUHDRg_-BPAnpbGpgi4fcNS7E\"}"}
+2022-08-22 17:46:55     DEBUG   middlewares/logger.go:97        HTTP 访问日志   {"status": 201, "request": "POST /v1/auth/signup/using-email", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.81.0", "errors": "", "time": "802.503 ms", "Request Body": "", "Response Body": "{\"data\":{\"id\":9,\"name\":\"sjxiang13\",\"created_at\":\"2022-08-22T17:46:55.479+08:00\",\"updated_at\":\"2022-08-22T17:46:55.479+08:00\"},\"token\":\
 
+"
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.
+eyJ1c2VyX2lkIjoiOSIsInVzZXJfbmFtZSI6InNqeGlhbmcxMyIsImV4cGlyZV90aW1lIjoxNjY2MzQ1NjE1LCJleHAiOjE2NjYzNDU2MTUsImlhdCI6MTY2MTE2MTYxNSwiaXNzIjoiR29odWIiLCJuYmYiOjE2NjExNjE2MTV9
+.
+rllLpfgc7XNxdk508kyUHDRg_-BPAnpbGpgi4fcNS7E\
+
+"
 
 

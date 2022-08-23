@@ -2,7 +2,6 @@ package user
 
 import (
 	"github.com/sjxiang/gohub/pkg/database"
-	"github.com/sjxiang/gohub/pkg/hash"
 )
 
 // IsEmailExist 判断 Email 是否已经被注册
@@ -23,13 +22,18 @@ func IsPhoneExist(phone string) bool {
 }
 
 
-// Create 创建用户，通过 User.ID 来判断是否创建成功
-func (userModel *User) Create() {
-	database.DB.Create(&userModel)
-} 
-
-
-// ComparePassword 密码是否正确
-func (userModel *User) ComparePassword(_password string) bool {
-	return hash.BcryptCheck(_password, userModel.Password)
+// GetByEmail 通过邮箱来获取用户
+func GetByEmail(email string) (userModel User) {
+	database.DB.Where("email = ?", email).First(&userModel)
+	return
 }
+
+
+// GetByMulti 通过 『手机号码 / 邮箱 / 用户名』来获取用户
+func GetByMulti(loginID string) (userModel User) {
+	database.DB.Where("phone = ?", loginID).Or("email = ?", loginID).Or("name = ?", loginID).First(&userModel)
+	return
+}
+
+
+

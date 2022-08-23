@@ -70,7 +70,7 @@ func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
 	userModel.Create()
 
 	if userModel.ID > 0 {
-		token := jwt.NewJWT().IssueToken(userModel.GeyStringID(), userModel.Name)
+		token := jwt.NewJWT().GenToken(userModel.GeyStringID(), userModel.Name)
 		response.CreatedJSON(c, gin.H{
 			"data": userModel,
 			"token": token,

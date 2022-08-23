@@ -3,7 +3,6 @@ package util
 import (
 	"fmt"
 	mathrand "math/rand"
-	"os"
 	"time"
 	// "crypto/rand"
 )
@@ -30,7 +29,7 @@ func MicrosecondsStr(elapsed time.Duration) string {
 
 // TimenowInTimezone 获取当前时间，支持时区
 func TimenowInTimezone() time.Time {
-	chinaTimezone, _ := time.LoadLocation(os.Getenv("APP_Timezone"))
+	chinaTimezone, _ := time.LoadLocation("Asia/Shanghai")
 	return time.Now().In(chinaTimezone)
 }
 
